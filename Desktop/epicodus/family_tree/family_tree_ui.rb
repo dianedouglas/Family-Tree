@@ -22,6 +22,7 @@ def main_menu
     puts "\n\n"
     puts "Type [P] to add a new person."
     puts "Type [LP] to list all people in the tree."
+    puts "Type [SO] to add a person's significant other."
     puts "Type [X] to exit."
     choice = gets.chomp.upcase
     case choice
@@ -29,6 +30,10 @@ def main_menu
       create_person
     when 'LP'
       list_people
+    when 'SO'
+      puts "First, who got married?"
+      select_person
+      add_spouse
     when 'X'
       puts "Bye bye!"
     else
@@ -46,7 +51,7 @@ def list_people
     if person.spouse_id == nil
       puts "Single!"
     else
-      puts "Married to: "
+      puts "Married to: #{person.spouse.name}"
     end
     sleep 1
   end
@@ -57,6 +62,33 @@ def create_person
   name = gets.chomp
   @current_person = Person.create({name: name})
   list_people
+end
+
+def select_person
+  list_people
+  if Person.all.length > 0
+    loop do
+      puts "Please type in a number to select a person."
+      person = gets.chomp.to_i
+      if person <= Person.all.length && person > 0
+        @current_person = Person.all[person - 1]
+        break
+      end
+    end
+  else
+    puts "You need to add some people first!"
+    main_menu
+  end
+end
+
+def add_spouse
+  puts "Please enter the name of #{@current_person.name}'s new spouse."
+  spouse_name = gets.chomp
+  spouse = Person.create({name: spouse_name})
+  @current_person.add_spouse(spouse)
+  @current_person.save
+  puts "\n\n Congratulations to #{@current_person.name} and #{@current_person.spouse.name}!!"
+  main_menu
 end
 
 

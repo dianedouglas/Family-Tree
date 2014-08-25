@@ -21,6 +21,7 @@ describe Person do
     it "sets and returns the person's spouse." do
       @test_person1.add_spouse(@test_person2)
       expect(@test_person1.spouse).to eq @test_person2
+      expect(@test_person2.spouse).to eq @test_person1
     end
   end
 end
