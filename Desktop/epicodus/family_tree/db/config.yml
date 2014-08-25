@@ -1,0 +1,6 @@
+development:
+  adapter: postgresql
+  database: family_tree_development
+test:
+  adapter: postgresql
+  database: family_tree_test
