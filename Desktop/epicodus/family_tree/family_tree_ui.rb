@@ -26,6 +26,8 @@ def main_menu
     puts "Type [LP] to list all people in the tree."
     puts "Type [SO] to add a person's significant other."
     puts "Type [M] to add a person's mother."
+    puts "Type [L] to add a location."
+    puts "Type [LP] to add a person to a location."
     puts "Type [X] to exit."
     choice = gets.chomp.upcase
     case choice
@@ -39,6 +41,10 @@ def main_menu
       add_spouse
     when 'M'
       add_mother
+    when 'L'
+      add_location
+    when 'LP'
+      add_location_to_person
     when 'X'
       puts "Bye bye!"
     else
@@ -127,6 +133,32 @@ def add_mother
       puts "Just enter 'y' or 'n' please."
     end
   end
+end
+
+def list_locations
+  if Location.all.length > 0
+    puts "\nHere are all the locations you have so far...\n"
+    Location.all.each_with_index do |location, i|
+      puts ""
+      puts (i + 1).to_s + ". " + location.name
+      sleep 1
+    end
+  else
+    puts "You need to add some locations first!"
+    main_menu
+  end
+end
+
+def add_location
+end
+
+def select_location
+end
+
+def add_location_to_person
+  select_person
+
+  puts "Enter the location for that person."
 end
 
 
