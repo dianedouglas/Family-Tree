@@ -24,4 +24,12 @@ describe Person do
       expect(@test_person2.spouse).to eq @test_person1
     end
   end
+
+  describe '#mother' do
+
+    it "has one mother." do
+      @test_person1.mother = @test_mother1
+      expect(@test_person1.mother).to eq @test_mother1
+    end
+  end
 end
