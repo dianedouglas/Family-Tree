@@ -4,6 +4,7 @@ require 'bundler/setup'
 Bundler.require(:default)
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 require './lib/person'
+require './lib/mother'
 
 database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
@@ -23,6 +24,7 @@ def main_menu
     puts "Type [P] to add a new person."
     puts "Type [LP] to list all people in the tree."
     puts "Type [SO] to add a person's significant other."
+    puts "Type [M] to add a person's mother."
     puts "Type [X] to exit."
     choice = gets.chomp.upcase
     case choice
@@ -34,6 +36,8 @@ def main_menu
       puts "First, who got married?"
       select_person
       add_spouse
+    when 'M'
+      add_mother
     when 'X'
       puts "Bye bye!"
     else
@@ -89,6 +93,33 @@ def add_spouse
   @current_person.save
   puts "\n\n Congratulations to #{@current_person.name} and #{@current_person.spouse.name}!!"
   main_menu
+end
+
+def add_mother
+  puts "First, whose mother are you adding?"
+  select_person
+  puts "Is their mother already in the database? y/n"
+  loop do
+    yn = gets.chomp
+    if yn == 'y'
+      child = @current_person
+      puts "OK, then let's select their mother."
+      select_person
+      child.mother = Mother.new({name: @current_person.name})
+      child.save
+      puts "Alright, #{child.name} is the child of #{child.mother.name}"
+      break
+    elsif yn == 'n'
+      puts "OK, then enter the mother's name."
+      name = gets.chomp
+      mother = Mother.create({name: name})
+      @current_person.mother = mother
+      @current_person.save
+      break
+    else
+      puts "Just enter 'y' or 'n' please."
+    end
+  end
 end
 
 

@@ -23,5 +23,5 @@ def setup
   @test_person2 = Person.new({name: 'Jimmy Page'})
   @test_person2.save
   @test_mother1 = Mother.new({name: 'Mrs. Plant'})
-  @test_mother1.save
+  @test_mother1
 end
