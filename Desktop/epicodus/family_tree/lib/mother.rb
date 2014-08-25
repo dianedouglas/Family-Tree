@@ -1,5 +1,3 @@
-class Mother < ActiveRecord::Base
-
-  has_many :people
+class Mother < Person
 
 end
