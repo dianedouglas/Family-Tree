@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
 
-  belongs_to :mother
+  belongs_to :mother, class_name: 'Person'
 
   def add_spouse(so)
     self.update({spouse_id: so.id})

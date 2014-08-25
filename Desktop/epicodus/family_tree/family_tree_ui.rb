@@ -4,12 +4,12 @@ require 'bundler/setup'
 Bundler.require(:default)
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 require './lib/person'
-require './lib/mother'
 
 database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
 ActiveRecord::Base.establish_connection(development_configuration)
 
+# Person.all.each {|person| person.destroy}
 @current_person = nil
 
 def welcome
@@ -105,14 +105,14 @@ def add_mother
       child = @current_person
       puts "OK, then let's select their mother."
       select_person
-      child.mother = Mother.new({name: @current_person.name})
+      child.mother = @current_person
       child.save
       puts "Alright, #{child.name} is the child of #{child.mother.name}"
       break
     elsif yn == 'n'
       puts "OK, then enter the mother's name."
       name = gets.chomp
-      mother = Mother.create({name: name})
+      mother = Person.create({name: name})
       @current_person.mother = mother
       @current_person.save
       break
