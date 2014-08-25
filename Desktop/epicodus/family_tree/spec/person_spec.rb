@@ -32,4 +32,12 @@ describe Person do
       expect(@test_person1.mother).to eq @test_mother1
     end
   end
+
+  describe '#locations' do
+
+    it "has many locations (home, vacation home, college, etc.)" do
+      @test_person1.locations << @test_location
+      expect(@test_person1.locations).to eq [@test_location]
+    end
+  end
 end

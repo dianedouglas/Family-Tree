@@ -4,6 +4,7 @@ require 'bundler/setup'
 Bundler.require(:default)
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 require 'person'
+require 'location'
 
 database_configurations = YAML::load(File.open('./db/config.yml'))
 test_configuration = database_configurations['test']
@@ -23,4 +24,6 @@ def setup
   @test_person2.save
   @test_mother1 = Person.new({name: 'Mrs. Plant'})
   @test_mother1
+  @test_location = Location.new({name: 'Portland, OR'})
+  @test_location.save
 end
