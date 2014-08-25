@@ -107,7 +107,7 @@ def add_mother
       select_person
       child.mother = @current_person
       child.save
-      puts "Alright, #{child.name} is the child of #{child.mother.name}"
+      puts "\n\nAlright, #{child.name} is the child of #{child.mother.name}"
       break
     elsif yn == 'n'
       puts "OK, then enter the mother's name."
@@ -115,6 +115,7 @@ def add_mother
       mother = Person.create({name: name})
       @current_person.mother = mother
       @current_person.save
+      puts "\n\nAlright, #{@current_person.name} is the child of #{@current_person.mother.name}."
       break
     else
       puts "Just enter 'y' or 'n' please."
