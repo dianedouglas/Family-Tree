@@ -48,16 +48,21 @@ def main_menu
 end
 
 def list_people
-  puts "\nHere are all the people you have so far...\n"
-  Person.all.each_with_index do |person, i|
-    puts ""
-    puts (i + 1).to_s + ". " + person.name
-    if person.spouse_id == nil
-      puts "Single!"
-    else
-      puts "Married to: #{person.spouse.name}"
+  if Person.all.length > 0
+    puts "\nHere are all the people you have so far...\n"
+    Person.all.each_with_index do |person, i|
+      puts ""
+      puts (i + 1).to_s + ". " + person.name
+      if person.spouse_id == nil
+        puts "Single!"
+      else
+        puts "Married to: #{person.spouse.name}"
+      end
+      sleep 1
     end
-    sleep 1
+  else
+    puts "You need to add some people first!"
+    main_menu
   end
 end
 
