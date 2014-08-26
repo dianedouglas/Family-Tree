@@ -47,6 +47,10 @@ describe Person do
       @test_person2.capitalize_first_letter
       expect(@test_person2.name).to eq 'Jimmy Page'
     end
+
+    it "will call capitalize_first_letter before saving automatically." do
+      expect(@test_person2.name).to eq 'Jimmy Page'
+    end
   end
 
 end
