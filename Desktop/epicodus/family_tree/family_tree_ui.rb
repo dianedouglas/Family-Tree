@@ -10,8 +10,9 @@ database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
 ActiveRecord::Base.establish_connection(development_configuration)
 
-# Person.all.each {|person| person.destroy}
+Person.all.each {|person| person.destroy}
 @current_person = nil
+@current_location = nil
 
 def welcome
   puts "\n\nHi! Let's work on your family tree!"
@@ -23,11 +24,15 @@ def main_menu
   until choice == 'X'
     puts "\n\n"
     puts "Type [P] to add a new person."
+    puts "Type [DP] to delete a person."
     puts "Type [LP] to list all people in the tree."
     puts "Type [SO] to add a person's significant other."
     puts "Type [M] to add a person's mother."
+    puts "Type [LS] to print out all of a person's siblings."
     puts "Type [L] to add a location."
-    puts "Type [LP] to add a person to a location."
+    puts "Type [DL] to delete a location."
+    puts "Type [APL] to add a person to a location."
+    puts "Type [PL] to print all locations that you could find a particular person in."
     puts "Type [X] to exit."
     choice = gets.chomp.upcase
     case choice
@@ -41,10 +46,13 @@ def main_menu
       add_spouse
     when 'M'
       add_mother
+
     when 'L'
       add_location
-    when 'LP'
+    when 'APL'
       add_location_to_person
+    when 'PL'
+      list_person_locations
     when 'X'
       puts "Bye bye!"
     else
@@ -150,16 +158,62 @@ def list_locations
 end
 
 def add_location
+  puts "Please enter the name of the location. City, State."
+  name = gets.chomp
+  @current_location = Location.create({name: name})
+  puts "Done."
+  list_locations
 end
 
 def select_location
+  list_locations
+  if Location.all.length > 0
+    loop do
+      puts "Please type in a number to select a location."
+      location = gets.chomp.to_i
+      if location <= Location.all.length && location > 0
+        @current_location = Location.all[location - 1]
+        break
+      end
+    end
+  else
+    puts "You need to add some locations first!"
+    main_menu
+  end
 end
 
 def add_location_to_person
+  puts "Who are we assigning to a location?"
   select_person
-
-  puts "Enter the location for that person."
+  puts "Is the location already in the database? y/n"
+  loop do
+    yn = gets.chomp
+    if yn == 'y'
+      puts "OK, then let's select their location."
+      select_location
+      @current_person.locations << @current_location
+      puts "\n\nAlright, #{@current_person.name} is in #{@current_location.name}, at least some of the time."
+      break
+    elsif yn == 'n'
+      puts "OK, then enter the location's name."
+      name = gets.chomp
+      @current_location = Location.create({name: name})
+      @current_person.locations << @current_location
+      puts "\n\nAlright, #{@current_person.name} is in #{@current_location.name}, at least some of the time."
+      break
+    else
+      puts "Just enter 'y' or 'n' please."
+    end
+  end
 end
 
+def list_person_locations
+  puts "Who are you trying to find?"
+  select_person
+  puts "You can find them in one of these places: "
+  @current_person.locations.each do |location|
+    puts "\n#{location.name}"
+  end
+end
 
 welcome
