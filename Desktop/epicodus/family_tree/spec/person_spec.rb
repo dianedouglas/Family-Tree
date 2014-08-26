@@ -40,4 +40,13 @@ describe Person do
       expect(@test_person1.locations).to eq [@test_location]
     end
   end
+
+  describe '#capitalize_first_letter' do
+
+    it "will capitalize the first letter of each word in the person's name." do
+      @test_person2.capitalize_first_letter
+      expect(@test_person2.name).to eq 'Jimmy Page'
+    end
+  end
+
 end
