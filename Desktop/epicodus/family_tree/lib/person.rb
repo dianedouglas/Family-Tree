@@ -1,5 +1,6 @@
 class Person < ActiveRecord::Base
 
+  validates :name, :presence => true
   belongs_to :mother, class_name: 'Person'
   has_and_belongs_to_many :locations
   before_save :capitalize_first_letter

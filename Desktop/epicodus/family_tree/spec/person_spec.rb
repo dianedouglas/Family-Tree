@@ -53,4 +53,12 @@ describe Person do
     end
   end
 
+  describe '#validation' do
+
+    it "will validate the presence of a person's name." do
+      blank_person = Person.new({})
+      expect(blank_person.save).to eq false
+    end
+  end
+
 end
