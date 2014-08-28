@@ -33,6 +33,7 @@ def main_menu
     puts "Type [DL] to delete a location."
     puts "Type [APL] to add a person to a location."
     puts "Type [PL] to print all locations that you could find a particular person in."
+    puts "Type [FP] to find all the people that could be in a given location."
     puts "Type [X] to exit."
     choice = gets.chomp.upcase
     case choice
@@ -51,13 +52,15 @@ def main_menu
       add_mother
     when 'L'
       add_location
-     when 'DL'
+    when 'DL'
       delete_object("Location")
       list_locations
     when 'APL'
       add_location_to_person
     when 'PL'
       list_person_locations
+    when 'FP'
+      list_location_people
     when 'X'
       puts "Bye bye!"
     else
@@ -218,6 +221,15 @@ def list_person_locations
   puts "You can find them in one of these places: "
   @current_person.locations.each do |location|
     puts "\n#{location.name}"
+  end
+end
+
+def list_location_people
+  puts "Where are you travelling to?"
+  select_location
+  puts "Perhaps you visit one of these people in #{@current_location.name}: "
+  @current_location.people.each do |person|
+    puts "\n#{person.name}"
   end
 end
 
