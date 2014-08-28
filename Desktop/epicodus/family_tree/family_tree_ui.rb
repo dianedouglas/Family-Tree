@@ -38,6 +38,8 @@ def main_menu
     case choice
     when 'P'
       create_person
+    when 'DP'
+      delete_person
     when 'LP'
       list_people
     when 'SO'
@@ -49,6 +51,8 @@ def main_menu
 
     when 'L'
       add_location
+     when 'DL'
+      delete_location
     when 'APL'
       add_location_to_person
     when 'PL'
@@ -214,6 +218,14 @@ def list_person_locations
   @current_person.locations.each do |location|
     puts "\n#{location.name}"
   end
+end
+
+def delete_location
+  puts "Which location you would like to remove?"
+  select_location
+  @current_location.destroy
+  puts "Done. Here are all the rest of your locations."
+  list_locations
 end
 
 welcome
