@@ -39,7 +39,8 @@ def main_menu
     when 'P'
       create_person
     when 'DP'
-      delete_person
+      delete_object("Person")
+      list_people
     when 'LP'
       list_people
     when 'SO'
@@ -48,11 +49,11 @@ def main_menu
       add_spouse
     when 'M'
       add_mother
-
     when 'L'
       add_location
      when 'DL'
-      delete_location
+      delete_object("Location")
+      list_locations
     when 'APL'
       add_location_to_person
     when 'PL'
@@ -220,12 +221,16 @@ def list_person_locations
   end
 end
 
-def delete_location
-  puts "Which location you would like to remove?"
-  select_location
-  @current_location.destroy
-  puts "Done. Here are all the rest of your locations."
-  list_locations
+def delete_object(target_class)
+  puts "Which #{target_class} you would like to remove?"
+  if target_class == "Location"
+    select_location
+    @current_location.destroy
+  elsif target_class == "Person"
+    select_person
+    @current_person.destroy
+  end
+  puts "Done."
 end
 
 welcome
