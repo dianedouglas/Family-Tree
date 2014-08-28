@@ -23,7 +23,7 @@ def setup
   @test_person2 = Person.new({name: 'jimmy page'})
   @test_person2.save
   @test_mother1 = Person.new({name: 'Mrs. Plant'})
-  @test_mother1
+  @test_mother1.save
   @test_location = Location.new({name: 'Portland, OR'})
   @test_location.save
 end
