@@ -51,7 +51,7 @@ def main_menu
     when 'M'
       add_mother
     when 'LS'
-      list_siblings
+      list_object("Person", "Who's siblings do you want to see?", "Here are all of their siblings:", "They don't have any siblings.")
     when 'L'
       add_location
     when 'DL'
@@ -218,7 +218,7 @@ def add_location_to_person
 end
 
 def list_person_locations
-  puts "Who are you trying to find?"
+  puts "Who are you looking for?"
   select_person
   puts "You can find them in one of these places: "
   @current_person.locations.each do |location|
@@ -235,16 +235,27 @@ def list_location_people
   end
 end
 
-def delete_object(target_class)
-  puts "Which #{target_class} you would like to remove?"
-  if target_class == "Location"
+def list_object(target, message1, message2, error_msg)
+  puts message1
+  if target.include? "Location"
     select_location
-    @current_location.destroy
-  elsif target_class == "Person"
+    things_to_print = @current_person.locations
+  elsif target.include? "Person"
     select_person
-    @current_person.destroy
+    if message1.include? "siblings"
+      things_to_print = @current_person.siblings
+    else 
+      things_to_print = @current_location.people
+    end
+  end    
+  if things_to_print.length > 0
+    puts message2
+    things_to_print.each do |object|
+        puts "\n#{object.name}"
+    end
+  else
+    puts error_msg
   end
-  puts "Done."
 end
 
 def list_siblings
@@ -259,6 +270,18 @@ def list_siblings
   else 
     puts "They don't have any siblings."
   end
+end
+
+def delete_object(target_class)
+  puts "Which #{target_class} you would like to remove?"
+  if target_class == "Location"
+    select_location
+    @current_location.destroy
+  elsif target_class == "Person"
+    select_person
+    @current_person.destroy
+  end
+  puts "Done."
 end
 
 welcome

@@ -78,8 +78,8 @@ describe Person do
     it "will output all instances of person with the same mother." do
       @test_person1.update({mother_id: @test_mother1.id})
       @test_person2.update({mother_id: @test_mother1.id})
-      expect(@test_person2.siblings).to eq [@test_person2, @test_person1]
-      expect(@test_person1.siblings).to eq [@test_person2, @test_person1]
+      expect(@test_person2.siblings).to eq [@test_person1]
+      expect(@test_person1.siblings).to eq [@test_person2]
     end
   end
 

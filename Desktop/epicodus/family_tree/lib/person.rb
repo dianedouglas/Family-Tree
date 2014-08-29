@@ -24,6 +24,9 @@ class Person < ActiveRecord::Base
   end
 
   def siblings
-    Person.where(mother_id: self.mother_id)
+    siblings = Person.where(mother_id: self.mother_id)
+    sibling_array = siblings.to_a
+    sibling_array.delete(self)
+    sibling_array    
   end
 end
