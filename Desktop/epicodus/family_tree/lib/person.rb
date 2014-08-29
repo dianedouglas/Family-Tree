@@ -22,4 +22,8 @@ class Person < ActiveRecord::Base
   	new_name = new_name.join(" ")
   	self.name = new_name
   end
+
+  def siblings
+    Person.where(mother_id: self.mother_id)
+  end
 end
