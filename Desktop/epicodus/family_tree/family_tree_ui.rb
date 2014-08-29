@@ -244,9 +244,13 @@ end
 def list_location_people
   puts "Where are you travelling to?"
   select_location
-  puts "Perhaps you visit one of these people in #{@current_location.name}: "
-  @current_location.people.each do |person|
-    puts "\n#{person.name}"
+  if @current_location.people.length > 0
+    puts "Perhaps you visit one of these people in #{@current_location.name}: "
+    @current_location.people.each do |person|
+      puts "\n#{person.name}"
+    end
+  else
+    puts "You don't know anyone in that location yet."
   end
 end
 
