@@ -60,7 +60,7 @@ def main_menu
     when 'APL'
       add_location_to_person
     when 'PL'
-      list_person_locations
+      list_object("Person", "Who are you looking for?", "You can find them in one of these places:", "They don't have any stored locations yet.")
     when 'FP'
       list_location_people
     when 'X'
@@ -217,14 +217,14 @@ def add_location_to_person
   end
 end
 
-def list_person_locations
-  puts "Who are you looking for?"
-  select_person
-  puts "You can find them in one of these places: "
-  @current_person.locations.each do |location|
-    puts "\n#{location.name}"
-  end
-end
+# def list_person_locations
+#   puts "Who are you looking for?"
+#   select_person
+#   puts "You can find them in one of these places: "
+#   @current_person.locations.each do |location|
+#     puts "\n#{location.name}"
+#   end
+# end
 
 def list_location_people
   puts "Where are you travelling to?"
@@ -255,20 +255,6 @@ def list_object(target, message1, message2, error_msg)
     end
   else
     puts error_msg
-  end
-end
-
-def list_siblings
-  puts "Who's siblings do you want to see?"
-  select_person
-  siblings = @current_person.siblings
-  if siblings.length > 0
-    puts "Here are all the siblings of #{@current_person.name}:"
-    siblings.each do |sibling|
-      puts "\n#{sibling.name}"
-    end
-  else 
-    puts "They don't have any siblings."
   end
 end
 
