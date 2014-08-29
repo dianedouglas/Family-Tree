@@ -337,9 +337,13 @@ def edit_person
 end
 
 def print_current_person_locations
-  puts "Here is #{@current_person.name}'s current list of locations."
-  @current_person.locations.each_with_index do |location, i|
-    puts "\n#{(i + 1).to_s}. #{location.name}"
+  if @current_person.locations.length > 0
+    puts "Here is #{@current_person.name}'s current list of locations."
+    @current_person.locations.each_with_index do |location, i|
+      puts "\n#{(i + 1).to_s}. #{location.name}"
+    end
+  else
+    puts "#{@current_person.name} doesn't have any locations stored yet."
   end
 end
 
