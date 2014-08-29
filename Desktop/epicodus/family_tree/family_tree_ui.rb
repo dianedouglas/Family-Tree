@@ -226,10 +226,7 @@ end
 def list_person_locations
   puts "Who are you looking for?"
   select_person
-  puts "You can find them in one of these places: "
-  @current_person.locations.each do |location|
-    puts "\n#{location.name}"
-  end
+  print_current_person_locations
 end
 
 def list_location_people
@@ -283,14 +280,39 @@ def edit_person
     name = gets.chomp
     @current_person.update({name: name})
   when 'l'
-
-
+    loop do
+      print_current_person_locations
+      puts "Enter the location's number to modify it."
+      location_index = gets.chomp.to_i
+      if location_index > 0 && location_index <= @current_person.locations.length
+        @current_location = @current_person.locations[location_index - 1]
+        puts "Enter [d] to delete the location, or type in a new name for it."
+        modify = gets.chomp
+        if modify == 'd' || modify == 'D'
+          @current_person.locations.destroy(@current_location)
+          print_current_person_locations
+          break
+        else
+          @current_person.locations[location_index - 1].update({name: modify})
+          break
+        end
+      else
+        puts "That is not a valid location."
+      end
+    end
   when 'm'
 
   when 'x'
     else
       puts 'Afraid that is not an option.'
     end
+  end
+end
+
+def print_current_person_locations
+  puts "Here is #{@current_person.name}'s current list of locations."
+  @current_person.locations.each_with_index do |location, i|
+    puts "\n#{(i + 1).to_s}. #{location.name}"
   end
 end
 
