@@ -31,6 +31,8 @@ def main_menu
     puts "Type [LS] to print out all of a person's maternal siblings."
     puts "Type [L] to add a location."
     puts "Type [DL] to delete a location."
+    puts "Type [EL] to edit a location."
+    puts "Type [LL] to list locations."
     puts "Type [APL] to add a person to a location."
     puts "Type [PL] to print all locations that you could find a particular person in."
     puts "Type [FP] to find all the people that could be in a given location."
@@ -58,6 +60,10 @@ def main_menu
       add_location
     when 'DL'
       delete_object("Location")
+      list_locations
+    when 'EL'
+      edit_location
+    when 'LL'
       list_locations
     when 'APL'
       add_location_to_person
@@ -324,11 +330,19 @@ def print_current_person_locations
 end
 
 def edit_location
-
-
+  select_location
+  puts "Enter [d] to delete the location, or type in a new name for it."
+  modify = gets.chomp
+  if modify == 'd' || modify == 'D'
+    @current_location.destroy
+    list_locations
+  else
+    @current_location.update({name: modify})
+    list_locations
+  end
 end
 
-def find_mother
+def list_mother
 
 
 end
