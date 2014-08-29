@@ -25,6 +25,7 @@ def main_menu
     puts "Type [P] to add a new person."
     puts "Type [DP] to delete a person."
     puts "Type [LP] to list all people in the tree."
+    puts "Type [EP] to edit a person."
     puts "Type [SO] to add a person's significant other."
     puts "Type [M] to add a person's mother."
     puts "Type [LS] to print out all of a person's maternal siblings."
@@ -43,6 +44,8 @@ def main_menu
       list_people
     when 'LP'
       list_people
+    when 'EP'
+      edit_person
     when 'SO'
       puts "First, who got married?"
       select_person
@@ -263,5 +266,48 @@ def delete_object(target_class)
   end
   puts "Done."
 end
+
+def edit_person
+  puts "Which person would you like to edit?"
+  select_person
+  choice = nil
+  until choice == 'x'
+    puts "Enter [n] to edit their name."
+    puts "Enter [l] to edit their locations."
+    puts "Enter [m] to edit their mother."
+    puts "Enter [x] to return to the main menu."
+    choice = gets.chomp.downcase
+    case choice
+  when 'n'
+    puts "Enter the new name."
+    name = gets.chomp
+    @current_person.update({name: name})
+  when 'l'
+
+
+  when 'm'
+
+  when 'x'
+    else
+      puts 'Afraid that is not an option.'
+    end
+  end
+end
+
+def edit_location
+
+
+end
+
+def find_mother
+
+
+end
+
+
+
+
+
+
 
 welcome
