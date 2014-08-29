@@ -10,7 +10,7 @@ database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
 ActiveRecord::Base.establish_connection(development_configuration)
 
-Person.all.each {|person| person.destroy}
+# Person.all.each {|person| person.destroy}
 @current_person = nil
 @current_location = nil
 
@@ -28,7 +28,7 @@ def main_menu
     puts "Type [LP] to list all people in the tree."
     puts "Type [SO] to add a person's significant other."
     puts "Type [M] to add a person's mother."
-    puts "Type [LS] to print out all of a person's siblings."
+    puts "Type [LS] to print out all of a person's maternal siblings."
     puts "Type [L] to add a location."
     puts "Type [DL] to delete a location."
     puts "Type [APL] to add a person to a location."
@@ -50,6 +50,8 @@ def main_menu
       add_spouse
     when 'M'
       add_mother
+    when 'LS'
+      list_siblings
     when 'L'
       add_location
     when 'DL'
@@ -243,6 +245,20 @@ def delete_object(target_class)
     @current_person.destroy
   end
   puts "Done."
+end
+
+def list_siblings
+  puts "Who's siblings do you want to see?"
+  select_person
+  siblings = @current_person.siblings
+  if siblings.length > 0
+    puts "Here are all the siblings of #{@current_person.name}:"
+    siblings.each do |sibling|
+      puts "\n#{sibling.name}"
+    end
+  else 
+    puts "They don't have any siblings."
+  end
 end
 
 welcome
