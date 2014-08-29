@@ -301,7 +301,14 @@ def edit_person
       end
     end
   when 'm'
-
+    if @current_person.mother == nil
+      puts "#{@current_person.name} doesn't have a mother assigned yet."
+      break
+    else
+      puts "Enter the new name of #{@current_person.name}'s mother."
+      mother = gets.chomp
+      @current_person.mother.update({name: mother})
+    end
   when 'x'
     else
       puts 'Afraid that is not an option.'
