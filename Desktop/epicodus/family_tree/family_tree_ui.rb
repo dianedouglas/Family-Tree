@@ -27,8 +27,10 @@ def main_menu
     puts "Type [LP] to list all people in the tree."
     puts "Type [EP] to edit a person."
     puts "Type [SO] to add a person's significant other."
+    puts "Type [LSO] to print out a person's significant other(s)."
     puts "Type [M] to add a person's mother."
     puts "Type [LS] to print out all of a person's maternal siblings."
+    puts "Type [LM] to print out a person's mother's name."
     puts "Type [L] to add a location."
     puts "Type [DL] to delete a location."
     puts "Type [EL] to edit a location."
@@ -52,10 +54,14 @@ def main_menu
       puts "First, who got married?"
       select_person
       add_spouse
+    when 'LSO'
+      list_so
     when 'M'
       add_mother
     when 'LS'
       list_siblings
+    when 'LM'
+      list_mother
     when 'L'
       add_location
     when 'DL'
@@ -307,13 +313,17 @@ def edit_person
       end
     end
   when 'm'
-    if @current_person.mother == nil
+    if @current_person.mother_id == nil
       puts "#{@current_person.name} doesn't have a mother assigned yet."
       break
     else
-      puts "Enter the new name of #{@current_person.name}'s mother."
+      puts "Enter the new name of #{@current_person.name}'s mother, or type [d] to delete her."
       mother = gets.chomp
-      @current_person.mother.update({name: mother})
+      if mother == 'd' || mother == 'D'
+        @current_person.mother.destroy
+      else
+        @current_person.mother.update({name: mother})
+      end
     end
   when 'x'
     else
@@ -343,14 +353,23 @@ def edit_location
 end
 
 def list_mother
-
-
+  puts "Who's mother are you looking for?"
+  select_person
+  if @current_person.mother_id == nil
+    puts "They don't have a mother listed yet."
+  else
+    puts "Their mother is #{@current_person.mother.name}"
+  end
 end
 
-
-
-
-
-
+def list_so
+  puts "Who's significant other are you looking for?"
+  select_person
+  if @current_person.spouse_id == nil
+    puts "They don't have a spouse listed yet."
+  else
+    puts "Their spouse is #{@current_person.spouse.name}"
+  end
+end
 
 welcome
