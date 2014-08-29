@@ -10,7 +10,6 @@ database_configurations = YAML::load(File.open('./db/config.yml'))
 development_configuration = database_configurations['development']
 ActiveRecord::Base.establish_connection(development_configuration)
 
-# Person.all.each {|person| person.destroy}
 @current_person = nil
 @current_location = nil
 
@@ -51,7 +50,7 @@ def main_menu
     when 'M'
       add_mother
     when 'LS'
-      list_object("Person", "Who's siblings do you want to see?", "Here are all of their siblings:", "They don't have any siblings.")
+      list_siblings
     when 'L'
       add_location
     when 'DL'
@@ -60,7 +59,7 @@ def main_menu
     when 'APL'
       add_location_to_person
     when 'PL'
-      list_object("Person", "Who are you looking for?", "You can find them in one of these places:", "They don't have any stored locations yet.")
+      list_person_locations
     when 'FP'
       list_location_people
     when 'X'
@@ -75,6 +74,7 @@ end
 def list_people
   if Person.all.length > 0
     puts "\nHere are all the people you have so far...\n"
+    sleep 1
     Person.all.each_with_index do |person, i|
       puts ""
       puts (i + 1).to_s + ". " + person.name
@@ -83,10 +83,11 @@ def list_people
       else
         puts "Married to: #{person.spouse.name}"
       end
-      sleep 1
     end
+    sleep 1
   else
     puts "You need to add some people first!"
+    sleep 1
     main_menu
   end
 end
@@ -156,13 +157,15 @@ end
 def list_locations
   if Location.all.length > 0
     puts "\nHere are all the locations you have so far...\n"
+    sleep 1
     Location.all.each_with_index do |location, i|
       puts ""
       puts (i + 1).to_s + ". " + location.name
-      sleep 1
     end
+    sleep 1
   else
     puts "You need to add some locations first!"
+    sleep 1
     main_menu
   end
 end
@@ -217,14 +220,14 @@ def add_location_to_person
   end
 end
 
-# def list_person_locations
-#   puts "Who are you looking for?"
-#   select_person
-#   puts "You can find them in one of these places: "
-#   @current_person.locations.each do |location|
-#     puts "\n#{location.name}"
-#   end
-# end
+def list_person_locations
+  puts "Who are you looking for?"
+  select_person
+  puts "You can find them in one of these places: "
+  @current_person.locations.each do |location|
+    puts "\n#{location.name}"
+  end
+end
 
 def list_location_people
   puts "Where are you travelling to?"
@@ -235,26 +238,17 @@ def list_location_people
   end
 end
 
-def list_object(target, message1, message2, error_msg)
-  puts message1
-  if target.include? "Location"
-    select_location
-    things_to_print = @current_person.locations
-  elsif target.include? "Person"
-    select_person
-    if message1.include? "siblings"
-      things_to_print = @current_person.siblings
-    else 
-      things_to_print = @current_location.people
-    end
-  end    
-  if things_to_print.length > 0
-    puts message2
-    things_to_print.each do |object|
-        puts "\n#{object.name}"
+def list_siblings
+  puts "Who's siblings do you want to see?"
+  select_person
+  siblings = @current_person.siblings
+  if siblings.length > 0
+    puts "Here are all the siblings of #{@current_person.name}:"
+    siblings.each do |sibling|
+      puts "\n#{sibling.name}"
     end
   else
-    puts error_msg
+    puts "They don't have any siblings."
   end
 end
 
